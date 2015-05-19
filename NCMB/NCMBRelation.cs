@@ -25,7 +25,7 @@ namespace NCMB
 	/// <summary>
 	/// リレーション操作を扱います。
 	/// </summary>
-	public class NCMBRelation<T> where T : NCMBObject
+	public class NCMBRelation<T> where T : NCMBObject, new()
 	{
 		private NCMBObject _parent;//GetRelationしたNCMBObject。親。
 		private string _key;//リレーションがあるフィールド(親)のキー

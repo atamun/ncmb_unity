@@ -22,7 +22,7 @@ using MiniJSON;
 namespace NCMB.Internal
 {
 	//add操作の履歴管理を扱う
-	internal class NCMBRelationOperation<T> : INCMBFieldOperation where T : NCMBObject
+	internal class NCMBRelationOperation<T> : INCMBFieldOperation where T : NCMBObject, new()
 	{
 
 		private String _targetClass;//Add,Remove対象のオブジェクトClassName(子)

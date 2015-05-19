@@ -296,7 +296,7 @@ namespace NCMB
 		/// </summary>
 		/// <param name="key">フィールド名</param>
 		/// <returns>keyに対応したNCMBRelationを生成して返します。<br/>もし、フィールドに既にNCMBRelationが存在した場合、情報を引き継いだNCMBRelationを生成して返します。</returns>
-		public NCMBRelation<T> GetRelation<T> (String key) where T : NCMBObject
+		public NCMBRelation<T> GetRelation<T> (String key) where T : NCMBObject, new()
 		{
 			NCMBRelation<T> relation = new NCMBRelation<T> (this, key);
 			object value = null;

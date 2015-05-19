@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  **********/
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ namespace NCMB
 	/// <summary>
 	/// クエリ操作を扱います。
 	/// </summary>
-	public class NCMBQuery<T> where T : NCMBObject
+	public class NCMBQuery<T> where T : NCMBObject, new()
 	{
 		private readonly Dictionary<string, object> _where;//where以降のパスを保存
 		private readonly string WHERE_URL = "?";
@@ -53,6 +52,15 @@ namespace NCMB
 			this._order = new List<string> ();
 			this._include = new List<string> ();
 			this._where = new Dictionary<string, object> ();
+
+		}
+
+		/// <summary>
+		/// コンストラクター
+		/// 型パラメータのクラスからデータストアのクラス名を自動取得します.
+		/// </summary>
+		public NCMBQuery () : this(NCMBUtility.GetClassName<T>())
+		{
 
 		}
 
@@ -368,7 +376,7 @@ namespace NCMB
 		/// <param name="key">  フィールド名</param>
 		/// <param name="query">  副問い合わせに使用するクエリ</param>
 		/// <returns> クエリ</returns>
-		public NCMBQuery<T> WhereMatchesQuery<TOther> (string key, NCMBQuery<TOther> query)where TOther : NCMBObject
+		public NCMBQuery<T> WhereMatchesQuery<TOther> (string key, NCMBQuery<TOther> query)where TOther : NCMBObject, new()
 		{
 			_addCondition (key, "$inQuery", query);
 			return this;
@@ -381,7 +389,7 @@ namespace NCMB
 		/// <param name="subKey">  サブクエリのフィールド名</param>
 		/// <param name="query">  サブクエリ</param>
 		/// <returns> クエリ</returns>
-		public NCMBQuery<T> WhereMatchesKeyInQuery<TOther> (string mainKey, string subKey, NCMBQuery<TOther> query)where TOther : NCMBObject
+		public NCMBQuery<T> WhereMatchesKeyInQuery<TOther> (string mainKey, string subKey, NCMBQuery<TOther> query)where TOther : NCMBObject, new()
 		{
 			Dictionary<string , object> con = new Dictionary<string, object> ();
 
@@ -621,6 +629,8 @@ namespace NCMB
 						obj = new NCMBUser ();
 					} else if (resultClassName.Equals ("role")) {
 						obj = new NCMBRole ();
+					} else if (resultClassName.Equals (this._className)) {
+						obj = new T ();
 					} else {
 						obj = new NCMBObject (resultClassName);
 					}

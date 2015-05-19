@@ -39,6 +39,20 @@ namespace NCMB.Internal
 			} 
 		}
 
+		internal static string GetClassName<T> () where T : NCMBObject
+		{
+			try {
+				Type type = typeof(T);
+				NCMBClassNameAttribute customAttribute = (NCMBClassNameAttribute)type.GetCustomAttributes (true) [0];
+				if ((customAttribute == null) || (customAttribute.ClassName == null)) {
+					throw new NCMBException (new ArgumentException ("No ClassName attribute specified on the given subclass."));
+				}
+				return customAttribute.ClassName;
+			} catch (Exception e) {
+				throw new NCMBException (e);
+			}
+		}
+
 		internal static void CopyDictionary (IDictionary<string, object> listSouce, IDictionary<string, object> listDestination)
 		{
 			try {
